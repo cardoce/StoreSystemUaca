@@ -9,6 +9,7 @@ package Views;
 import Classes.Product;
 import DataAccess.DataAccess;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -47,6 +48,7 @@ public class AddProductToInvoice extends javax.swing.JFrame {
         cmbCode = new javax.swing.JComboBox<>();
         lblCode1 = new javax.swing.JLabel();
         txtQuantity = new javax.swing.JTextField();
+        bttnDone = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -108,13 +110,19 @@ public class AddProductToInvoice extends javax.swing.JFrame {
 
         txtQuantity.setText("1");
 
+        bttnDone.setText("Listo");
+        bttnDone.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bttnDoneActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(bttnAddToInvoice)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -137,9 +145,15 @@ public class AddProductToInvoice extends javax.swing.JFrame {
                                 .addComponent(cmbCode, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 551, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(bttnAddToInvoice)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(bttnDone))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                            .addGap(28, 28, 28)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 551, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(34, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -166,7 +180,9 @@ public class AddProductToInvoice extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
-                .addComponent(bttnAddToInvoice)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bttnAddToInvoice)
+                    .addComponent(bttnDone))
                 .addContainerGap())
         );
 
@@ -191,12 +207,12 @@ public class AddProductToInvoice extends javax.swing.JFrame {
        ArrayList<Product> selectedProductList = new ArrayList<>();
        for(int i=0; selectedRows.length>i;i++){
            String code = tblProducts.getValueAt(selectedRows[i], 2).toString();
-           System.out.println(code);
            selectedProductList.add(getProductFromList(productList, code));
        }
-          InvoiceDashboard invoiceDashboard =new InvoiceDashboard(selectedProductList);
-          invoiceDashboard.show();
-          this.dispose();
+          if(invoiceProductList.addAll(selectedProductList)){
+              JOptionPane.showMessageDialog(jPanel1, "Producto Agregado");
+          }
+          
     }//GEN-LAST:event_bttnAddToInvoiceActionPerformed
     public Product getProductFromList(ArrayList<Product> productList, String code){
         Product selectProduct = new Product();
@@ -228,7 +244,7 @@ public class AddProductToInvoice extends javax.swing.JFrame {
                 cmbProductsListener=true;
             }
         }
-        
+
     }//GEN-LAST:event_cmbTypeActionPerformed
 
     private void cmbProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbProductActionPerformed
@@ -246,6 +262,12 @@ public class AddProductToInvoice extends javax.swing.JFrame {
        }
     }//GEN-LAST:event_cmbProductActionPerformed
 
+    private void bttnDoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnDoneActionPerformed
+        InvoiceDashboard invoiceDashboard = new InvoiceDashboard(invoiceProductList);
+        invoiceDashboard.show();
+        this.dispose();
+    }//GEN-LAST:event_bttnDoneActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -253,7 +275,7 @@ public class AddProductToInvoice extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -278,17 +300,18 @@ public class AddProductToInvoice extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
 //                new AddProductToInvoice().setVisible(true);
-                
+
             }
         });
     }
-    
 
+    ArrayList<Product> invoiceProductList = new ArrayList<>();
     ArrayList<Product> productList = new ArrayList<>();
     DataAccess dataAccess = new DataAccess();
     boolean cmbProductsListener;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bttnAddToInvoice;
+    private javax.swing.JButton bttnDone;
     private javax.swing.JComboBox<String> cmbCode;
     private javax.swing.JComboBox<String> cmbProduct;
     private javax.swing.JComboBox<String> cmbType;
