@@ -5,7 +5,10 @@
  */
 package Views;
 
+import Classes.Invoice;
 import Classes.Product;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
@@ -20,14 +23,20 @@ public class InvoiceDashboard extends javax.swing.JFrame {
      */
     public InvoiceDashboard(ArrayList<Product> products) {
         initComponents();
-        DefaultTableModel model = (DefaultTableModel) tblInvoice.getModel();
-          for (int i = 0; products.size() > i; i++) {
-            Product product = products.get(i);
-             model.addRow(new Object[]{product.getName(), product.getPrice(), product.getCode(), product.getPresentation()});
-          }
+        invoice.setCodeIndex(1000);
+        invoice.setInvoceNumber();
+        invoice.setInvoiceDate(Date.valueOf(LocalDate.MAX));
+        loadTable(invoice, products);
     }
 
-
+    public void loadTable(Invoice invoice, ArrayList<Product> products ){
+        DefaultTableModel model = (DefaultTableModel) tblInvoice.getModel();
+        invoice.AddListProductsToInvoiceList(products);
+        for(int i=0;invoice.getProductList().size()>i;i++){
+            Product product = invoice.getProductList().get(i);
+             model.addRow(new Object[]{product.getName(), product.getPresentation(), product.getQuantity(), product.getPrice()});
+        }
+    }
 
 
     /**
@@ -57,10 +66,7 @@ public class InvoiceDashboard extends javax.swing.JFrame {
 
         tblInvoice.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Producto", "Presentation", "Cantidad", "Precio"
@@ -185,7 +191,7 @@ public class InvoiceDashboard extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void AddClientMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddClientMenuButtonActionPerformed
-        // TODO add your handling code here:
+        System.out.println(invoice.GetInvoiceData().get(0));
     }//GEN-LAST:event_AddClientMenuButtonActionPerformed
 
     private void bttnAddProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttnAddProductActionPerformed
@@ -223,12 +229,13 @@ public class InvoiceDashboard extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ArrayList<Product> products =new ArrayList<>();
+                
                 new InvoiceDashboard(products).setVisible(true);
             }
         });
     }
-    
+    public static ArrayList<Product> products = new ArrayList<>();
+    public static Invoice invoice =new Invoice();
     AddProductToInvoice addProductToInvoice = new AddProductToInvoice();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem AddClientMenuButton;
