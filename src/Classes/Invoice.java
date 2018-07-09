@@ -15,7 +15,7 @@ import java.util.Optional;
  */
 public class Invoice implements InvoiceInterface {
     private String invoceNumber;
-    private ArrayList<Object> productList = new ArrayList<>();
+    private ArrayList<Product> productList = new ArrayList<>();
     private Date invoiceDate;
     private double discount;
     private Integer codeIndex = 1000;
@@ -69,9 +69,13 @@ public class Invoice implements InvoiceInterface {
         Software softwareProduct = Software.class.cast(product);
         return softwareProduct;
     }
+    
+    public void AddListProductsToInvoiceList(ArrayList<Product> productList){
+        this.productList.addAll(productList);
+    }
 
     @Override
-    public double GetTotalInovicePrice(ArrayList<Object> productList) {
+    public double GetTotalInovicePrice(ArrayList<Product> productList) {
        double totalInvoicePrice = 0;
        for(int i =0;productList.size()>i;i++){
                 if (productList.get(i) instanceof Electronic) {
@@ -112,11 +116,11 @@ public class Invoice implements InvoiceInterface {
         
     }
 
-    public ArrayList<Object> getProductList() {
+    public ArrayList<Product> getProductList() {
         return productList;
     }
 
-    public void setProductList(ArrayList<Object> productList) {
+    public void setProductList(ArrayList<Product> productList) {
         this.productList = productList;
     }
 

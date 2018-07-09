@@ -6,6 +6,7 @@
 package Interfaces;
 
 import Classes.Electronic;
+import Classes.Product;
 import Classes.Software;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -23,5 +24,5 @@ public interface InvoiceInterface {
     public ArrayList<String> GetProductData(Object product);
     public Electronic GetElectronicProduct(Object product);
     public Software GetSoftwareProduct(Object product);
-    public double GetTotalInovicePrice(ArrayList<Object> productList);
+    public double GetTotalInovicePrice(ArrayList<Product> productList);
 }
