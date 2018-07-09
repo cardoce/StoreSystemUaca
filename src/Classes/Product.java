@@ -37,7 +37,7 @@ public class Product {
         discountValue = (price*discount)/100;
         return discountValue;
     }
-    
+
     public ArrayList<Product> FullProductList(String name, Optional<Integer> voltage,  String type, double price, 
             int quantity, String code, String presentation, Optional<String> softwareType){
         ArrayList<Product> productList= new ArrayList<>();

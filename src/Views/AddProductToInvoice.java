@@ -78,14 +78,14 @@ public class AddProductToInvoice extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nombre", "Precio", "Presentacion", "Codigo"
+                "Nombre", "Precio", "Codigo", "Presentacion"
             }
         ) {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -190,14 +190,23 @@ public class AddProductToInvoice extends javax.swing.JFrame {
        int [] selectedRows =  tblProducts.getSelectedRows();
        ArrayList<Product> selectedProductList = new ArrayList<>();
        for(int i=0; selectedRows.length>i;i++){
-           int index = tblProducts.getSelectedRow();
-           selectedProductList.add(productList.get(index));
+           String code = tblProducts.getValueAt(selectedRows[i], 2).toString();
+           System.out.println(code);
+           selectedProductList.add(getProductFromList(productList, code));
        }
           InvoiceDashboard invoiceDashboard =new InvoiceDashboard(selectedProductList);
           invoiceDashboard.show();
           this.dispose();
     }//GEN-LAST:event_bttnAddToInvoiceActionPerformed
-
+    public Product getProductFromList(ArrayList<Product> productList, String code){
+        Product selectProduct = new Product();
+        for(Product product: productList){
+            if(product.getCode().equals(code)){
+                selectProduct = product;
+            }
+        }
+        return selectProduct;
+    }
     private void cmbTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTypeActionPerformed
         DefaultTableModel model = (DefaultTableModel) tblProducts.getModel();
         model.setRowCount(0);
