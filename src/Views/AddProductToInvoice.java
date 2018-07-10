@@ -207,7 +207,10 @@ public class AddProductToInvoice extends javax.swing.JFrame {
        ArrayList<Product> selectedProductList = new ArrayList<>();
        for(int i=0; selectedRows.length>i;i++){
            String code = tblProducts.getValueAt(selectedRows[i], 2).toString();
-           selectedProductList.add(getProductFromList(productList, code));
+           Product selectProduct = getProductFromList(productList, code);
+           validateQuantityField();
+           selectProduct.setQuantity(Integer.parseInt(txtQuantity.getText()));
+           selectedProductList.add(selectProduct);
        }
           if(invoiceProductList.addAll(selectedProductList)){
               JOptionPane.showMessageDialog(jPanel1, "Producto Agregado");
@@ -268,6 +271,16 @@ public class AddProductToInvoice extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_bttnDoneActionPerformed
 
+    public void validateQuantityField() {
+        try {
+            int quantity = Integer.parseInt(txtQuantity.getText());
+            if (quantity < 1) {
+                txtQuantity.setText("1");
+            }
+        } catch (NumberFormatException nfe) {
+            txtQuantity.setText("1");
+        }
+    }
     /**
      * @param args the command line arguments
      */
